@@ -7,7 +7,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL não definida. Defina a variável de ambiente DATABASE_URL.")
 
-DB_SCHEMA = os.getenv("DB_SCHEMA")  # defina DB_SCHEMA=SistemaFinanceiro no Render se quiser usar esse schema
+DB_SCHEMA = os.getenv("DB_SCHEMA") 
 
 engine = create_engine(DATABASE_URL, future=True)
 
