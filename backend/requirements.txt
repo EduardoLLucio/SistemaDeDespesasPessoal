@@ -18,4 +18,3 @@ reportlab
 qrcode
 jinja2
 pdfkit
-alembic
