@@ -9,7 +9,7 @@ backend/app/.env
 frontend/.env
 .env
 
-backend/app/static/fotos/
+
 
 *.db
 *.sqlite3
