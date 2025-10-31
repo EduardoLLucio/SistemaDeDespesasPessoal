@@ -1,5 +1,4 @@
 import React, { useState, useEffect} from 'react'
-import './ForgotPassword.scss'
 import '../../App.scss'
 import { Link } from 'react-router-dom'
 import Input from '../UI/Input';
@@ -51,7 +50,7 @@ const ForgotPassword = () => {
             if (response.ok) {
                 setMensagem(data.mensagem || "Se o email existir, um link será enviado para redefinir a senha.");
             } else {
-                setMensagem(typeof data.detail === 'String' 
+                setMensagem(typeof data.detail === 'string' 
                     ? data.detail
                     : Array.isArray(data.detail)
                         ? data.detail.map(e => e.msg).join(' | ')

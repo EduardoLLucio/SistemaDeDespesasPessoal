@@ -1,13 +1,13 @@
 import React from 'react'
 import './Dashboard.scss'
-import {FiPlus, FiCalendar, FiFilter, FiTrash2} from 'react-icons/fi'
+import {FiPlus, FiTrash2} from 'react-icons/fi'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {transacaoCategorias} from './ModalTransacao';
 import Modaltransacao from './ModalTransacao';
 import ModalFoto from './ModalFoto';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend} from 'recharts';
-import { MdNoEncryption } from 'react-icons/md';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Legend} from 'recharts';
+
 
 
               /*Mini graficos na lateral*/
@@ -268,13 +268,13 @@ function gerarBarrasMensais(transacoes, tipo){
   return meses.map((nome, i) => {
     const mes = (i+1).toString().padStart(2, '0');
     const valor = transacoes
-      .filter(t => t.tipo === tipo && t.data && t.data.slice(5,7)==mes)
+      .filter(t => t.tipo === tipo && t.data && t.data.slice(5,7) === mes)
       .reduce((soma, t) => soma + Number(t.valor), 0);
     return {mes: nome, valor };
   });
 }
 
-const dadosBarras = gerarBarrasMensais(transacoes, 'despesa');
+
 
 function gerarReceitasMensais(transacoes){
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];

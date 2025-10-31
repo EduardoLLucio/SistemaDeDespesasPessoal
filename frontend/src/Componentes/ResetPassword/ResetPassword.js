@@ -65,7 +65,7 @@ const ResetPassword = () => {
         if(response.ok){
             setMensagem(data.mensagem || "Senha alterada com sucesso!");
         }else{
-            setMensagem(typeof data.detail === 'String' 
+            setMensagem(typeof data.detail === 'string' 
                     ? data.detail
                     : Array.isArray(data.detail)
                         ? data.detail.map(e => e.msg).join(' | ')
