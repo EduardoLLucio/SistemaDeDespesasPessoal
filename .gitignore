@@ -45,7 +45,3 @@ package-lock.json
 desktop.ini
 __pycache__/
 *.pyc
-
-desktop.ini
-__pycache__/
-*.pyc
