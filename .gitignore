@@ -36,3 +36,13 @@ lerna-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+alembic/
+alembic.ini
+.hintrc
+package.json
+package-lock.json
+FotosdoProjeto/
+desktop.ini
+__pycache__/
+*.pyc
