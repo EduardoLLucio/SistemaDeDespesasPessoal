@@ -13,7 +13,7 @@ engine = create_engine(DATABASE_URL, future=True)
 
 if DB_SCHEMA:
     with engine.begin() as conn:
-        conn.execute(text(f'CREATE SCHEMA IF NOT EXISTS "{DB_SCHEMA}"'))
+        conn.execute(text(f'CREATE SCHEMA IF NOT EXISTS {DB_SCHEMA}'))
 
 metadata = MetaData(schema=DB_SCHEMA) if DB_SCHEMA else MetaData()
 Base = declarative_base(metadata=metadata)
