@@ -15,17 +15,23 @@ from fastapi.staticfiles import StaticFiles
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+_frontend_env = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+# aceita CSV e normaliza
+CORS_ORIGINS = [u.strip() for u in _frontend_env.split(",") if u.strip()]
+if not CORS_ORIGINS:
+    CORS_ORIGINS = ["http://localhost:3000"]
+# usa o primeiro origin para montar links enviados por email
+FRONTEND_ORIGIN_FOR_LINKS = CORS_ORIGINS[0]
+print("CORS_ORIGINS:", CORS_ORIGINS)
+ 
 app = FastAPI()
-static_dir= os.path.join(os.path.dirname(__file__), 'static')
-app.mount('/static', StaticFiles(directory=static_dir), name='static')
+ 
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_url],  
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -62,7 +68,7 @@ def cadastrar_usuario(usuario: schemas.User, background_tasks: BackgroundTasks, 
     if len(senha)<8 or(senha.lower() == senha or senha.upper()==senha):
         raise HTTPException(status_code=400, detail="A senha deve ter pelo menos 8 caracteres e conter pelo menos uma letra maiúscula e uma letra minúscula")
     usuario = crud.criar_usuario(db, usuario)
-    link= f"{frontend_url}/ativar-conta?token={usuario.token_ativacao}"
+    link = f"{FRONTEND_ORIGIN_FOR_LINKS}/ativar-conta?token={usuario.token_ativacao}"
     corpo = f"Clique no link para ativar sua conta : <a href='{link}'>{link}</a>"
     background_tasks.add_task(enviar_email, usuario.email, "Ative sua conta", corpo)
     return usuario
@@ -131,7 +137,7 @@ def esqueci_senha(request: EmailRequest, background_tasks: BackgroundTasks, db: 
     #salva o token no campo de ativacao
     usuario.token_ativacao = token_redefinicao
     db.commit()
-    link = f"{frontend_url}/reset-password?token={token_redefinicao}"
+    link = f"{FRONTEND_ORIGIN_FOR_LINKS}/reset-password?token={token_redefinicao}"
     corpo = f"Clique no link para redefinir sua senha: <a href='{link}'>{link}</a>"
     background_tasks.add_task(enviar_email, usuario.email, "Redefinição de senha", corpo)
     return {"mensagem": "Se o email existir, um link será enviado para redefinir a senha"}
